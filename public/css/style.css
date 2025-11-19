@@ -1,0 +1,159 @@
+body{
+    font-family: "Plus Jakarta Sans" , sans-serif !important;
+    display: flex;
+    flex-direction:column ;
+    min-height: 100vh;
+}
+
+
+.container{
+    flex:1;
+}
+
+
+.navbar{
+
+    height: 5rem;
+    background-color: white;
+
+}
+
+.fa-compass{
+    color: #fe424d;
+    font-size: 2rem;
+}
+
+.nav-link{
+    color: #222222 !important;
+}
+
+/*footer */
+
+.f-info-links a {
+    text-decoration: none;
+    color: #222222;
+}
+
+.f-info-links a:hover {
+    text-decoration: underline;
+    
+}
+.f-info {
+    text-align: center;
+    display: flex;
+    height: 8rem;
+    background-color:#ebebeb ;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: space-evenly;
+}
+
+.f-info-links{
+    width: 100%;
+    vertical-align: middle;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.f-info-socials {
+    width: 100%;
+    font-size: 1.2rem;
+    margin-right: 2rem ;
+    vertical-align: middle;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.f-info-socials i{
+    margin-right: 1rem;
+}
+
+.f-info-brand{
+     width: 100%;
+    vertical-align: middle;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* cards */
+
+.card{
+    border: none !important;
+    margin-bottom:2rem ;
+}
+
+.card-img-top{
+    border-radius:1rem !important ;
+    width: 100%;
+    object-fit: cover !important;
+}
+
+.card-body{
+    padding: 0;
+}
+
+.card-text p{
+    font-weight: 400;
+    
+}
+
+
+.listing-link {
+    text-decoration: none;
+}
+
+/* card effect */
+
+
+.card-img-overlay{
+    opacity: 0;
+}
+
+
+
+.add-btn {
+    background-color: #fe424d !important;
+    border: none !important;
+}
+
+.edit-btn{
+    background-color: #fe424d !important;
+    border: none !important;
+}
+
+.show-img{
+    height: 30v;
+
+}
+
+/* Hover enlarge effect for all cards */
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    transform-origin: center bottom; /* makes it grow downward */
+    z-index: 0;
+
+}
+
+.card:hover {
+    transform: scale(1.05);
+    z-index: 10;
+    position: relative;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+}
+
+.card img {
+    transition: transform 0.3s ease;
+}
+
+.card:hover img {
+    transform: scale(1.1);
+}
+
+
+
+
+
