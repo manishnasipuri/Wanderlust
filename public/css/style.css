@@ -1,3 +1,6 @@
+
+
+
 body{
     font-family: "Plus Jakarta Sans" , sans-serif !important;
     display: flex;
@@ -155,5 +158,68 @@ body{
 
 
 
+/* ===== REMOVE DEFAULT LINK STYLE ===== */
+.listing-link {
+  text-decoration: none !important;
+  color: inherit;
+}
+
+/* ===== CARD FIX (BOOTSTRAP OVERRIDE) ===== */
+.card {
+  border: none !important;
+  border-radius: 16px !important;
+  overflow: hidden;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 2rem;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18);
+}
+
+/* ===== IMAGE FIX ===== */
+.card-img-top {
+  height: 20rem;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.card:hover .card-img-top {
+  transform: scale(1.05);
+}
+
+/* ===== CARD BODY ===== */
+.card-body {
+  padding: 1rem 1.2rem;
+}
+
+/* ===== TEXT ===== */
+.card-text b {
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.card-text {
+  color: #222;
+}
+
+/* ===== PRICE STYLE ===== */
+.card-text span,
+.card-text {
+  font-size: 0.95rem;
+}
+
+/* ===== GRID SPACING FIX ===== */
+.row > .col {
+  padding: 0.75rem;
+}
+
+/* ===== PAGE TITLE ===== */
+h3 {
+  margin: 1.5rem 0;
+  font-weight: 600;
+}
 
 

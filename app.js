@@ -10,37 +10,38 @@ const { listingSchema ,reviewSchema } = require("./schema.js");
 const Review = require("./models/review.js");
 const listingRoutes = require("./routes/listing.js");
 const reviewRoutes = require("./routes/review.js");
+const session = require("express-session");
+const flash = require("connect-flash");
+
+const MONGO_URL = "mongodb://127.0.0.1:27017/WonderLust";
 
 
 
 
 
 
-const MONGO_URL= "mongodb://127.0.0.1:27017/WonderLust";
-main().then(() => {
-    console.log("connected to db")
-}).catch((err) => {
-    console.log(err);
-});
-
-async function main() {
-    await mongoose.connect(MONGO_URL);
-}
-
-
-app.set("view engine" , "ejs" );
-app.set("views" , path.join(__dirname, "views"));
-app.use(express.urlencoded({extended: true}));
-app.use(methodOverride("_method"));
-app.engine("ejs" , ejsMate);
-app.use(express.static(path.join(__dirname , "/public")));
-
+const sessionOptions = {
+    secret : "mysupersecretcode",
+    resave : false,
+    saveUninitialized : true,
+    cookie : {
+        expires: Date.now() + 1000 * 60 * 60 * 24 *7,
+        maxAge : 1000 * 60 * 60 * 24 *7,
+        httpOnly : true,
+    },
+};
 
 
 // Root Route
 app.get("/" , (req, res ) => {
     res.send("hi i am root");
 })
+
+app.use(session(sessionOptions));
+app.use(flash());
+
+
+
 
 const logger = (req,res,next)=>{
     console.log(req.url)
@@ -62,6 +63,13 @@ const validateReview = (req, res, next) => {
     next();
    }
 };
+
+
+app.use((req, res, next) => {
+    res.locals.success = req.flash("success");
+    res.locals.error = req.flash("error");
+    next();
+});
 
 
 app.use("/listings", listingRoutes);
@@ -98,15 +106,28 @@ app.all("/*" , (req, res, next) => {
 //generic error handler
 
 app.use((err, req, res, next) => {
-    let { statusCode,message } = err;
-    res.render("error.ejs" , {message});
-    // res.status(statusCode).send(massage);
+    let { statusCode = 500, message = "Something went wrong!" } = err;
+    res.status(statusCode).render("error.ejs", { message });
 });
 
-
-
-app .listen(8080 ,() => {
-    console.log("Server is listening to port 8080");
+main().then(() => {
+    console.log("connected to db");
+    app.listen(8080, () => {
+        console.log("Server is listening to port 8080");
+    });
+}).catch((err) => {
+    console.log(err);
 });
+
+async function main() {
+    await mongoose.connect(MONGO_URL);
+}
+
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride("_method"));
+app.engine("ejs", ejsMate);
+app.use(express.static(path.join(__dirname, "/public")));
 
 
