@@ -40,6 +40,9 @@ app.get("/" , (req, res ) => {
 app.use(session(sessionOptions));
 app.use(flash());
 
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "public")));
+
 
 
 
@@ -106,9 +109,18 @@ app.all("/*" , (req, res, next) => {
 //generic error handler
 
 app.use((err, req, res, next) => {
-    let { statusCode = 500, message = "Something went wrong!" } = err;
-    res.status(statusCode).render("error.ejs", { message });
+    try {
+        let { statusCode = 500, message = "Something went wrong!" } = err;
+        res.status(statusCode).render("error.ejs", { message });
+    } catch (renderErr) {
+        console.error("Render error:", renderErr);
+        res.status(500).send("Internal Server Error");
+    }
 });
+
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+app.engine("ejs", ejsMate);
 
 main().then(() => {
     console.log("connected to db");
@@ -122,12 +134,5 @@ main().then(() => {
 async function main() {
     await mongoose.connect(MONGO_URL);
 }
-
-app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
-app.use(express.urlencoded({ extended: true }));
-app.use(methodOverride("_method"));
-app.engine("ejs", ejsMate);
-app.use(express.static(path.join(__dirname, "/public")));
 
 

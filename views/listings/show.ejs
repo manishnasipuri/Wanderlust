@@ -28,7 +28,8 @@
    <div class="btns">
         <a href="/listings/<%= listing._id %>/edit" class="btn btn-dark"> Edit</a>
         <br><br>
-        <form action="/listings/<%= listing._id %>?_method=DELETE"  method="POST">
+        <form action="/listings/<%= listing._id %>"  method="POST">
+            <input type="hidden" name="action" value="delete">
             <button  class="btn btn-dark">Delete</button>
         </form>
     </div>

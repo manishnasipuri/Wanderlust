@@ -6,15 +6,14 @@
         <h2>Edit your Listing</h2>
 
 
-        <form  method="post" action="/listings/<%=listing._id%>?_method=PUT">
+        <form  method="post" action="/listings/<%=listing._id%>">
             <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
                 <input type="text" value="<%= listing.title %>" name="listing[title]" class="form-control" required>
             </div>
             <div class="mb-3">
                 <label for="description" class="form-label">Description</label>
-                <textarea class="form-control"  name="listing[description]" required><%= listing.description %>"
-            </textarea>
+                <textarea class="form-control"  name="listing[description]" required><%= listing.description %></textarea>
             </div>
             <div class="mb-3">
                 <label for="image" class="form-label">Image Link</label>
