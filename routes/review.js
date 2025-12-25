@@ -13,7 +13,7 @@ const validateReview = (req, res, next) => {
    if(error){
     console.log(error.message);
     let errMsg = error.details.map((el) => el.message).join(",");
-    // ExpressError constructor expects (message, statusCode)
+   
     throw new ExpressError(errMsg, 400);
    } else{
     next();
