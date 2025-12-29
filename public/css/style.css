@@ -221,4 +221,12 @@ h3 {
   font-weight: 600;
 }
 
+.review-card {
+  background-color: #ffffff;
+  border: 2px solid #000;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+}
+
 
