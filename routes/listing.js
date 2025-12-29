@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const wrapAsync = require("../utils/wrapAsync.js");
-const ExpressError = require("../utils/ExpressError.js");
-const { listingSchema ,reviewSchema } = require("../schema.js");
 const Listing = require("../models/listing.js");
+const { isLoggedIN , isowner , validateListing} = require("../middleware.js");
 
 
 
@@ -11,15 +10,7 @@ const Listing = require("../models/listing.js");
 
 
 
-const validateListing = (req, res, next) => {
-   let {error} =  listingSchema.validate(req.body);
-   if(error){
-    let errMsg = error.details.map(el => el.message).join(",");
-    throw new ExpressError(errMsg , 400);
-   } else{
-    next();
-   }
-};
+
 
 
 //Index Route
@@ -28,7 +19,9 @@ router.get("/" , async (req , res ) => {
   res.render("listings/index" , {allListings});
 });
 
-router.get("/new" , (req , res ) => {
+
+//New Route
+router.get("/new" , isLoggedIN, (req , res ) => {
     res.render("listings/new.ejs");
 });
 
@@ -36,19 +29,19 @@ router.get("/new" , (req , res ) => {
 //show route
 router.get("/:id",wrapAsync(  async (req , res ) => {
     let {id} = req.params;
-    const listing = await Listing.findById(id).populate("reviews");
+    const listing = await Listing.findById(id).populate("reviews").populate("owner");
     if (!listing) {
         req.flash("error", "Listing not found");
         return res.redirect("/listings");
     }
-    // console.log(listing);
+    console.log(listing);
     res.render("listings/show.ejs" , { listing });
 }));
 
 
 //Create Route
 router.post(
-    "/" ,
+    "/" ,isLoggedIN,
      validateListing,
      wrapAsync(async(req , res, next ) => {
     let listingData = { ...req.body.listing };
@@ -59,6 +52,7 @@ router.post(
         };
     }
     const newListing = new Listing(listingData);
+    newListing.owner = req.user._id;
    await newListing.save();
    req.flash("success" , "New Listing Created !");
    res.redirect("/listings");
@@ -67,7 +61,7 @@ router.post(
 
 
 // Edit The Route
-router.get("/:id/edit" , wrapAsync(async(req, res ) => {
+router.get("/:id/edit" , isLoggedIN,isowner, wrapAsync(async(req, res ) => {
     let {id} = req.params;
     const listing = await Listing.findById(id);
     if (!listing) {
@@ -79,7 +73,7 @@ router.get("/:id/edit" , wrapAsync(async(req, res ) => {
 
 
 //update Route
-router.post("/:id",
+router.post("/:id",isLoggedIN,isowner,
      wrapAsync(async (req, res) => {
     if (req.body.action === "delete") {
         // Handle delete
@@ -111,6 +105,8 @@ router.post("/:id",
             filename: "listingimage"
         };
     }
+
+    
     await Listing.findByIdAndUpdate(req.params.id, updateData);
     req.flash("success", "Listing updated");
     res.redirect("/listings");

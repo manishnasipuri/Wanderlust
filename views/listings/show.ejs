@@ -13,7 +13,8 @@
     <img src="<%- listing.image.url %>" class="card-img-top show-img" alt="<%= listing.image.url %>">
   <div class="card-body">
     <p class="card-text">
-       
+       <i><%= listing.owner.username %> </i>
+       <br>
         <%= listing.description %> <br>
          &#8377; <%= listing.price %> <br>
          <%= listing.location %> <br>
@@ -24,7 +25,7 @@
 
 </div>
 
-
+  <% if(currentUser && currentUser._id.equals(listing.owner._id)) { %>
    <div class="btns">
         <a href="/listings/<%= listing._id %>/edit" class="btn btn-dark"> Edit</a>
         <br><br>
@@ -33,6 +34,7 @@
             <button  class="btn btn-dark">Delete</button>
         </form>
     </div>
+  <% } %>
 
 </body>
 
