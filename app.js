@@ -42,10 +42,10 @@ const sessionOptions = {
 };
 
 
-// Root Route
-app.get("/" , (req, res ) => {
-    res.send("hi i am root");
-})
+// // Root Route
+// app.get("/" , (req, res ) => {
+//     res.send("hi i am root");
+// })
 
 app.use(session(sessionOptions));
 app.use(flash());

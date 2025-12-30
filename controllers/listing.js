@@ -1,4 +1,6 @@
 const Listing = require("../models/listing");
+const { cloudinary } = require("../cloudConfig");
+
 
 
 
@@ -51,44 +53,49 @@ module.exports.editListing = async(req, res ) => {
         req.flash("error", "Listing not found");
         return res.redirect("/listings");
     }
-    res.render("listings/edit.ejs" , {listing});
+
+let originalImageUrl = listing.image.url;
+originalImageUrl = originalImageUrl.replace("/upload", "/upload/w_250");
+
+
+    res.render("listings/edit.ejs" , {listing , originalImageUrl});
 };
 
 
 module.exports.updateListing = async (req, res) => {
-    if (req.body.action === "delete") {
-        // Handle delete
-        const listing = await Listing.findById(req.params.id);
-        if (!listing) {
-            req.flash("error", "Listing not found");
-            return res.redirect("/listings");
-        }
-        await Listing.findByIdAndDelete(req.params.id);
-        req.flash("success", "Listing deleted");
-        return res.redirect("/listings");
-    }
-    // Handle update
-    // Validate
-    let {error} = listingSchema.validate(req.body);
-    if (error) {
-        let errMsg = error.details.map(el => el.message).join(",");
-        throw new ExpressError(errMsg, 400);
-    }
-    const listing = await Listing.findById(req.params.id);
+    const { id } = req.params;
+
+    // 1️⃣ Find listing
+    const listing = await Listing.findById(id);
     if (!listing) {
         req.flash("error", "Listing not found");
         return res.redirect("/listings");
     }
-    let updateData = { ...req.body.listing };
-    if (updateData.image) {
-        updateData.image = {
-            url: updateData.image,
-            filename: "listingimage"
+
+    // 2️⃣ Update text fields
+    listing.title = req.body.listing.title;
+    listing.description = req.body.listing.description;
+    listing.price = req.body.listing.price;
+    listing.location = req.body.listing.location;
+    listing.country = req.body.listing.country;
+
+    // 3️⃣ If new image uploaded → replace old image
+    if (req.file) {
+        // delete old image from cloudinary
+        if (listing.image && listing.image.filename) {
+            await cloudinary.uploader.destroy(listing.image.filename);
+        }
+
+        // save new image
+        listing.image = {
+            url: req.file.path,
+            filename: req.file.filename
         };
     }
 
-    
-    await Listing.findByIdAndUpdate(req.params.id, updateData);
-    req.flash("success", "Listing updated");
-    res.redirect("/listings");
+    // 4️⃣ Save changes
+    await listing.save();
+
+    req.flash("success", "Listing updated successfully!");
+    res.redirect(`/listings/${id}`);
 };

@@ -4,12 +4,33 @@
 <%= error %>
 <body>
     
-   <h3>All Listings</h3>
+   <!-- <h3>All Listings</h3> -->
    <!-- <form action="/listings/new" method="get" >
         <button>Create New Listing</button>
    </form> -->
+<style>
+     #filters{
+          margin-top: 1 rem;
+          display: flex;
+          flex-wrap: wrap;
+     }
+</style>
 
-<div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
+
+<div id="filters">
+     <div class="filter">
+          <div><i class="fa-solid fa-fire"></i></div>
+          <p>Trending</p>
+     </div>
+
+      <div class="filter">
+          </div><i class="fa-solid fa-bed"></i></div>
+          <p>Rooms</p>
+     </div>
+</div>
+
+
+<div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3" >
 
      <%for(let listing of allListings) { %>
      <a href="/listings/<%= listing._id %>" class="listing-link">

@@ -30,6 +30,8 @@ router.get("/new" , isLoggedIN, listingController.renderNewForm);
      router.route("/:id")
           .get(wrapAsync(listingController.showListing))
           .post(isLoggedIN,isowner,
+                upload.single('listing[image]'),
+                validateListing,
            wrapAsync(listingController.updateListing));
           
 
