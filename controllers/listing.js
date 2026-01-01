@@ -4,10 +4,7 @@ const { cloudinary } = require("../cloudConfig");
 
 
 
-module.exports.index =  async (req , res ) => {
-  const allListings = await Listing.find({});
-  res.render("listings/index" , {allListings});
-};
+
 
 module.exports.renderNewForm = (req , res ) => {
     res.render("listings/new.ejs");
@@ -61,6 +58,16 @@ originalImageUrl = originalImageUrl.replace("/upload", "/upload/w_250");
     res.render("listings/edit.ejs" , {listing , originalImageUrl});
 };
 
+module.exports.deleteListing = async (req, res) => {
+  const { id } = req.params;
+
+  await Listing.findByIdAndDelete(id);
+
+  req.flash("success", "Listing deleted successfully!");
+  res.redirect("/listings");
+};
+
+
 
 module.exports.updateListing = async (req, res) => {
     const { id } = req.params;
@@ -98,4 +105,28 @@ module.exports.updateListing = async (req, res) => {
 
     req.flash("success", "Listing updated successfully!");
     res.redirect(`/listings/${id}`);
+};
+
+module.exports.index = async (req, res) => {
+  const { search, category } = req.query;
+
+  let filter = {};
+
+  // 🔍 SEARCH
+  if (search) {
+    filter.$or = [
+      { title: { $regex: search, $options: "i" } },
+      { location: { $regex: search, $options: "i" } },
+      { country: { $regex: search, $options: "i" } }
+    ];
+  }
+
+  // 🧭 CATEGORY FILTER
+  if (category) {
+    filter.category = category;
+  }
+
+  const allListings = await Listing.find(filter);
+
+  res.render("listings/index", { allListings });
 };

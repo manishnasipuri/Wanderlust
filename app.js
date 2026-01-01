@@ -64,6 +64,7 @@ passport.deserializeUser(User.deserializeUser());
 
 
 app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
 
 
@@ -99,9 +100,18 @@ app.use((req, res, next) => {
 });
 
 
+
+app.use((req, res, next) => {
+    res.locals.search = req.query.search || "";
+    res.locals.category = req.query.category || "";
+    next();
+});
+
+
 app.use("/listings", listingRoutes);
 app.use("/listings/:id/reviews" , reviewRoutes);
 app.use("/", userRoutes);
+
 
 
 
