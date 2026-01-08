@@ -17,21 +17,46 @@ const Review = require("./models/review.js");
 const listingRoutes = require("./routes/listing.js");
 const reviewRoutes = require("./routes/review.js");
 const session = require("express-session");
+const MongoStore = require("connect-mongo").default;
 const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
 const userRoutes = require("./routes/user.js");
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/WonderLust";
+// const MONGO_URL = "mongodb://127.0.0.1:27017/WonderLust";
+
+const dbUrl = process.env.ATLASDB_URL;
+
+
+mongoose.connect(dbUrl)
+    .then(() => console.log("MongoDB connected"))
+    .catch(err => console.log(err));
 
 
 
+const store = MongoStore.create({
+    mongoUrl: dbUrl,
+     mongoOptions: {
+        tls: true,
+        tlsAllowInvalidCertificates: true,
+    },
+    crypto: {
+        secret: process.env.SECRET,
+    },
+    touchAfter: 24 * 60 * 60,
+});
+
+
+store.on("error", (e) => {
+    console.log("SESSION STORE ERROR", e);
+});
 
 
 
 const sessionOptions = {
-    secret : "mysupersecretcode",
+    store,
+    secret : process.env.SECRET ,
     resave : false,
     saveUninitialized : true,
     cookie : {
@@ -46,6 +71,13 @@ const sessionOptions = {
 // app.get("/" , (req, res ) => {
 //     res.send("hi i am root");
 // })
+
+
+
+
+
+
+
 
 app.use(session(sessionOptions));
 app.use(flash());
@@ -157,17 +189,17 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.engine("ejs", ejsMate);
 
-main().then(() => {
-    console.log("connected to db");
-    app.listen(8080, () => {
-        console.log("Server is listening to port 8080");
-    });
-}).catch((err) => {
-    console.log(err);
-});
 
-async function main() {
-    await mongoose.connect(MONGO_URL);
-}
+
+
+
+
+
+
+
+
+app.listen(8080, () => {
+    console.log("🚀 Server running on port 8080");
+});
 
 

@@ -6,7 +6,7 @@
         <h2>Edit your Listing</h2>
 
 
-        <form  method="post" action="/listings/<%=listing._id%>" novalidate  enctype="multipart/form-data"> 
+        <form  method="POST" action="/listings/<%=listing._id%>?_method=PUT" novalidate  enctype="multipart/form-data"> 
             <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
                 <input type="text" value="<%= listing.title %>" name="listing[title]" class="form-control" required>
@@ -18,13 +18,40 @@
 
              <div class="mb-3">
                 Original Listing Image: <br>
-              <img src="<%= originalImageUrl %>" alt="">
+              <img src="<%= originalImageUrl %>"
+             class="img-thumbnail"
+             style="max-width: 250px; height: auto;">
+
             </div>
 
             <div class="mb-3">
                 <label for="image" class="form-label"> Upload New Image </label>
                 <input class="form-control" type="file"  name="listing[image]" >
             </div>
+
+            <div class="mb-3">
+                <label class="form-label">Category</label>
+                <select name="listing[category]" class="form-select" required>
+                    <option value="">Select Category</option>
+
+                    <option value="Trending" <%= listing.category === "Trending" ? "selected" : "" %>>Trending</option>
+                    <option value="Rooms" <%= listing.category === "Rooms" ? "selected" : "" %>>Rooms</option>
+                    <option value="Iconic Cities" <%= listing.category === "Iconic Cities" ? "selected" : "" %>>Iconic Cities</option>
+                    <option value="Mountains" <%= listing.category === "Mountains" ? "selected" : "" %>>Mountains</option>
+                    <option value="Amazing Pools" <%= listing.category === "Amazing Pools" ? "selected" : "" %>>Amazing Pools</option>
+                    <option value="Castles" <%= listing.category === "Castles" ? "selected" : "" %>>Castles</option>
+                    <option value="Camping" <%= listing.category === "Camping" ? "selected" : "" %>>Camping</option>
+                    <option value="Farms" <%= listing.category === "Farms" ? "selected" : "" %>>Farms</option>
+                    <option value="Arctic" <%= listing.category === "Arctic" ? "selected" : "" %>>Arctic</option>
+                    <option value="Beach" <%= listing.category === "Beach" ? "selected" : "" %>>Beach</option>
+                    <option value="Amazing Views" <%= listing.category === "Amazing Views" ? "selected" : "" %>>Amazing Views</option>
+                    <option value="Lakefront" <%= listing.category === "Lakefront" ? "selected" : "" %>>Lakefront</option>
+                </select>
+                </div>
+
+
+
+
             <div class="row">
                 <div class="mb-3 col-md-4">
                     <label for="price" class="form-label">Price</label>
