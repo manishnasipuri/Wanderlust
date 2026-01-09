@@ -14,13 +14,13 @@ module.exports.renderLoginForm =  (req, res) => {
 
 
 
-module.exports.signup= async (req, res, next) => {
+module.exports.signup  = async (req, res, next) => {
     try {
     let {username, email, password} = req.body;
     const newUser =  new User({username, email});
     const registeredUser = await User.register(newUser, password );
     console.log(registeredUser);
-    res.login(registeredUser, err => {
+    req.login(registeredUser, err => {
         if(err) return next(err);
          req.flash("success", "Welcome to WonderLust");
          res.redirect("/listings");
