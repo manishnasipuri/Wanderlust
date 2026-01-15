@@ -326,3 +326,22 @@ h3 {
     width: 100%;
   }
 }
+
+.filters-wrapper {
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 10px 0;
+}
+
+.filters {
+  display: flex;
+  gap: 20px;
+  padding: 0 10px;
+}
+
+.filter {
+  text-align: center;
+  min-width: 80px;
+  font-size: 14px;
+  cursor: pointer;
+}
