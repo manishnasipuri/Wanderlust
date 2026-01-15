@@ -230,3 +230,99 @@ h3 {
 }
 
 
+/* =========================
+   MOBILE FIX (FINAL)
+   ========================= */
+@media (max-width: 768px) {
+
+  /* NAVBAR */
+  .navbar {
+    padding: 0.8rem 1rem;
+  }
+
+  .navbar-brand {
+    font-size: 1.2rem;
+  }
+
+  .navbar-collapse {
+    margin-top: 0.5rem;
+  }
+
+  /* SEARCH BAR */
+  .navbar form {
+    width: 100%;
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  .navbar input.form-control {
+    flex: 1;
+  }
+
+  .btn-search {
+    padding: 0.45rem 1rem;
+    white-space: nowrap;
+  }
+
+  /* NAV LINKS */
+  .navbar-nav {
+    margin-top: 0.5rem;
+  }
+
+  .navbar-nav .nav-link {
+    padding: 0.5rem 0;
+  }
+
+  /* FILTER BAR */
+  #filters {
+    display: flex;
+    flex-wrap: nowrap;       /* 🔥 KEY FIX */
+    overflow-x: auto;
+    gap: 1.2rem;
+    padding: 0.8rem 0;
+    margin-bottom: 0.5rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  #filters::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filter {
+    min-width: 70px;
+    text-align: center;
+  }
+
+  /* DISPLAY TAXES */
+  .tax-toggle {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+
+  /* CARDS */
+  .card {
+    margin-bottom: 1.5rem;
+  }
+
+  .card-img-top {
+    height: 14rem;
+  }
+
+  /* SHOW PAGE IMAGE */
+  .show-img {
+    height: 16rem;
+  }
+
+  /* REMOVE OFFSETS */
+  .offset-2,
+  .offset-3 {
+    margin-left: 0 !important;
+  }
+
+  .col-6,
+  .col-8 {
+    width: 100%;
+  }
+}
